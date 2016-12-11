@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+	<bean id="logAspect" class="com.atguigu.aspect.LogAspect"></bean>
+	<bean id="validatorAspect" class="com.atguigu.aspect.ValidatorAspect"></bean>
+	<bean id="mathCalulator" class="com.atguigu.calulator.MathCalulator"></bean>
+	
+	<aop:config>
+		<aop:pointcut expression="execution(public * *.*(int, int))" id="mypoint"/>
+		<aop:aspect ref="logAspect">
+			<aop:before method="logStart" pointcut-ref="mypoint"/>
+			<aop:after method="logEnd" pointcut-ref="mypoint"/>
+			<aop:after-returning method="logReturn" pointcut-ref="mypoint" returning="res"/>
+			<aop:after-throwing method="logException" pointcut-ref="mypoint" throwing="e"/>
+		</aop:aspect>
+		
+		<aop:aspect ref="validatorAspect">
+			<aop:before method="valiStart" pointcut-ref="mypoint"/>
+			<aop:after-returning method="valiStart" pointcut-ref="mypoint" returning="res"/>
+		</aop:aspect>
+	</aop:config>
+</beans>
